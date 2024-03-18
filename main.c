@@ -1,8 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-#define TMP_COMM_OUTPUT_FILE = "output.txt"
+#include <ctype.h>
 
 /**
  * @brief Retorna un string que contiene el directorio actual de trabajo
@@ -32,9 +31,41 @@ const char *currDir()
   return pwd;
 }
 
+/**
+ * @brief Revisa si la carpeta de nombre @name existe, retorna 1 si existe, 0 si no.
+ *
+ * @param name
+ * @return int
+ */
+int doesFolderExist(char name)
+{
+
+  char lsCommand[5] = "ls x";
+
+  lsCommand[3] = name;
+
+  int result = system(lsCommand) / 256;
+
+  return !result;
+}
+
 int main()
 {
-  printf("%s", currDir());
+
+  const char ALPHABET[] = "abcdefghijklmnopqrstuvwxyz";
+  // printf("%s", currDir());
+
+  int ind;
+
+  char currLetter;
+
+  for (ind = 0; ind < 26; ind++)
+  {
+    currLetter = toupper(ALPHABET[ind]);
+    // printf("%c\n", currLetter);
+
+    printf("%d\n", doesFolderExist(currLetter));
+  }
 
   return 0;
 }
