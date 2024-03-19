@@ -65,11 +65,15 @@ void createFolder(char *name, int nameLen)
   system(mkdirCommand);
 }
 
+/**
+ * @brief Copia archivos por su primera letra a su carpeta correspondiente
+ *
+ * @param name
+ */
 void copyFilesAZ(char *name)
 {
   char copyCommand[64] = "";
   snprintf(copyCommand, sizeof(copyCommand), "cp Sprites/%c*.png %s/", tolower(name[0]), name);
-  // printf("%s \n", copyCommand);
   system(copyCommand);
 }
 
