@@ -37,19 +37,26 @@ const char *currDir()
  * @param name
  * @return int
  */
-int doesFolderExist(char *name, int length)
+int doesFolderExist(char *name, size_t length)
 {
-
-  char lsCommand[5] = "ls ";
+  char lsCommand[64] = "ls ";
 
   strcat(lsCommand, name);
-  // lsCommand[3] = name;
+  strcat(lsCommand, " 2>> output.txt");
 
   int result = system(lsCommand) / 256;
+
+  remove("output.txt");
 
   return !result;
 }
 
+/**
+ * @brief Crea una carpeta con el nombre dado
+ *
+ * @param name
+ * @param nameLen
+ */
 void createFolder(char *name, int nameLen)
 {
   char mkdirCommand[9] = "mkdir ";
@@ -63,6 +70,7 @@ int main()
 
   const char ALPHABET[] = "abcdefghijklmnopqrstuvwxyz";
   // printf("%s", currDir());
+  currDir();
 
   int ind;
 
@@ -74,9 +82,10 @@ int main()
     currLetter[0] = toupper(ALPHABET[ind]);
     // printf("%c\n", currLetter);
 
-    printf("%d\n", doesFolderExist(currLetter, 1));
-
-    createFolder(currLetter, 1);
+    if (!doesFolderExist(currLetter, 1))
+    {
+      createFolder(currLetter, 1);
+    }
   }
 
   return 0;
