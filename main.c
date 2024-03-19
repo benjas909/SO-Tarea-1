@@ -65,12 +65,18 @@ void createFolder(char *name, int nameLen)
   system(mkdirCommand);
 }
 
+void copyFilesAZ(char *name)
+{
+  char copyCommand[64] = "";
+  snprintf(copyCommand, sizeof(copyCommand), "cp Sprites/%c*.png %s/", tolower(name[0]), name);
+  // printf("%s \n", copyCommand);
+  system(copyCommand);
+}
+
 int main()
 {
 
   const char ALPHABET[] = "abcdefghijklmnopqrstuvwxyz";
-  // printf("%s", currDir());
-  currDir();
 
   int ind;
 
@@ -86,6 +92,8 @@ int main()
     {
       createFolder(currLetter, 1);
     }
+
+    copyFilesAZ(currLetter);
   }
 
   return 0;
