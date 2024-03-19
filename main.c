@@ -39,7 +39,7 @@ const char *currDir()
  */
 int doesFolderExist(char *name, size_t length)
 {
-  char lsCommand[64] = "ls ";
+  char lsCommand[64] = "ls Sprites/";
 
   strcat(lsCommand, name);
   strcat(lsCommand, " 2>> output.txt");
@@ -59,7 +59,7 @@ int doesFolderExist(char *name, size_t length)
  */
 void createFolder(char *name, int nameLen)
 {
-  char mkdirCommand[9] = "mkdir ";
+  char mkdirCommand[64] = "mkdir Sprites/";
   strcat(mkdirCommand, name);
 
   system(mkdirCommand);
@@ -73,7 +73,7 @@ void createFolder(char *name, int nameLen)
 void copyFilesAZ(char *name)
 {
   char copyCommand[64] = "";
-  snprintf(copyCommand, sizeof(copyCommand), "cp Sprites/%c*.png %s/", tolower(name[0]), name);
+  snprintf(copyCommand, sizeof(copyCommand), "cp Sprites/%c*.png Sprites/%s/", tolower(name[0]), name);
   system(copyCommand);
 }
 
