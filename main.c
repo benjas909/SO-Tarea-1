@@ -39,7 +39,7 @@ const char *currDir()
  */
 int doesFolderExist(char *name, size_t length)
 {
-  char lsCommand[64] = "ls Sprites/"; // ls: muestra contenidos del directorio
+  char lsCommand[64] = "ls "; // ls: muestra contenidos del directorio
 
   strcat(lsCommand, name);
   strcat(lsCommand, " 2>> output.txt"); // 2>> hace que el output del comando se envíe a un archivo output.txt
@@ -59,7 +59,7 @@ int doesFolderExist(char *name, size_t length)
  */
 void createFolder(char *name, int nameLen)
 {
-  char mkdirCommand[64] = "mkdir Sprites/"; // mkdir: crea una carpeta/directorio
+  char mkdirCommand[64] = "mkdir "; // mkdir: crea una carpeta/directorio
   strcat(mkdirCommand, name);
 
   system(mkdirCommand);
@@ -73,12 +73,14 @@ void createFolder(char *name, int nameLen)
 void copyFilesAZ(char *name)
 {
   char copyCommand[64] = "";
-  snprintf(copyCommand, sizeof(copyCommand), "cp Sprites/%c*.png Sprites/%s/", tolower(name[0]), name); // cp: copia un archivo a una ubicación dada
+  snprintf(copyCommand, sizeof(copyCommand), "cp ./Sprites/%c*.png ./Sprites/Alfabético/%s/", tolower(name[0]), name); // cp: copia un archivo a una ubicación dada
   system(copyCommand);
 }
 
 int main()
 {
+
+  system("cd Sprites/");
 
   const char ALPHABET[] = "abcdefghijklmnopqrstuvwxyz";
 
@@ -87,20 +89,21 @@ int main()
   char currLetter[2];
   currLetter[1] = '\0';
 
-  // if (!doesFolderExist("Sprites/Alfabético/", sizeof("Sprites/Alfabético/")))
-  // {
-  //   system("mkdir Sprites/Alfabético/");
-  // }
+  if (!doesFolderExist("./Sprites/Alfabético/", sizeof("./Sprites/Alfabético/")))
+  {
+    system("mkdir ./Sprites/Alfabético/"); // mkdir: crea una carpeta en el directorio actual
+  }
 
   for (ind = 0; ind < 26; ind++)
   {
     currLetter[0] = toupper(ALPHABET[ind]);
     // printf("%c\n", currLetter);
-    // char currFolder[64] = "Sprites/Alfabético";
+    char currFolder[64] = "./Sprites/Alfabético/";
+    strcat(currFolder, currLetter);
 
-    if (!doesFolderExist(currLetter, 1))
+    if (!doesFolderExist(currFolder, sizeof(currFolder)))
     {
-      createFolder(currLetter, 1);
+      createFolder(currFolder, sizeof(currFolder));
     }
 
     copyFilesAZ(currLetter);
