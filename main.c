@@ -77,10 +77,16 @@ void copyFilesAZ(char *name)
   system(copyCommand);
 }
 
+void copyFilesGen(char *folderName, char *regex)
+{
+  char copyCommand[128] = "";
+  snprintf(copyCommand, sizeof(copyCommand), "ls ./Sprites/ | grep -E '*_%s.png' | xargs -i cp ./Sprites/{} ./Sprites/Generación/%s/", regex, folderName);
+  printf("%s\n", copyCommand);
+  system(copyCommand);
+}
+
 int main()
 {
-
-  system("cd Sprites/");
 
   const char ALPHABET[] = "abcdefghijklmnopqrstuvwxyz";
 
@@ -98,24 +104,50 @@ int main()
   {
     currLetter[0] = toupper(ALPHABET[ind]);
     // printf("%c\n", currLetter);
-    char currFolder[64] = "./Sprites/Alfabético/";
-    strcat(currFolder, currLetter);
+    char currFolderAZ[64] = "./Sprites/Alfabético/";
+    strcat(currFolderAZ, currLetter);
 
-    if (!doesFolderExist(currFolder, sizeof(currFolder)))
+    if (!doesFolderExist(currFolderAZ, sizeof(currFolderAZ)))
     {
-      createFolder(currFolder, sizeof(currFolder));
+      createFolder(currFolderAZ, sizeof(currFolderAZ));
     }
 
     copyFilesAZ(currLetter);
   }
 
+  if (!doesFolderExist("./Sprites/Generación/", sizeof("./Sprites/Generación/")))
+  {
+    system("mkdir ./Sprites/Generación/");
+  }
+
+  char *gens[] = {"I", "II", "III", "IV"};
+  char *regex[] = {"([1-9]|[1-9][0-9]|1[0-4][0-9]|15[0-1])",
+                   "(15[2-9]|1[6-9][0-9]|2[0-4][0-9]|25[0-1])",
+                   "(25[2-9]|2[6-9][0-9]|3[0-7][0-9]|38[0-6])",
+                   "(38[7-9]|39[0-9]|4[0-8][0-9]|49[0-3])"};
+
+  for (int i = 0; i < 4; i++)
+  {
+    char currFolderGen[64] = "./Sprites/Generación/";
+    strcat(currFolderGen, gens[i]);
+
+    printf("%s\n", currFolderGen);
+
+    if (!doesFolderExist(currFolderGen, sizeof(currFolderGen)))
+    {
+      createFolder(currFolderGen, sizeof(currFolderGen));
+    }
+
+    copyFilesGen(gens[i], regex[i]);
+  }
+
   return 0;
 }
 
-// ls | grep -E "*_([1-9]|[1-9][0-9]|1[0-4][0-9]|15[0-1]).png" | xargs -i cp {} ./I/
-// ls | grep -E "*_(15[2-9]|1[6-9][0-9]|2[0-4][0-9]|25[0-1]).png" // segunda generación
-// ls | grep -E "*_(25[2-9]|2[6-9][0-9]|3[0-7][0-9]|38[0-6]).png" // tercera gen
-// ls | grep -E "*_(38[7-9]|39[0-9]|4[0-8][0-9]|49[0-3]).png" // cuarta gen
+// ls ./Sprites/ | grep -E "*_([1-9]|[1-9][0-9]|1[0-4][0-9]|15[0-1]).png" | xargs -i cp ./Sprites/{} ./Sprites/Generación/I/
+// ls ./Sprites/ | grep -E "*_(15[2-9]|1[6-9][0-9]|2[0-4][0-9]|25[0-1]).png" // segunda generación
+// ls ./Sprites/ | grep -E "*_(25[2-9]|2[6-9][0-9]|3[0-7][0-9]|38[0-6]).png" // tercera gen
+// ls ./Sprites/ | grep -E "*_(38[7-9]|39[0-9]|4[0-8][0-9]|49[0-3]).png" // cuarta gen
 
 // Las generaciones van desde los n´umeros 1-151 para la primera, 152-251 para la
 // segunda, 252-386 para la tercera y 387-493 para la cuarta
