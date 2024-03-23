@@ -81,44 +81,47 @@ void copyFilesGen(char *folderName, char *regex)
 {
   char copyCommand[128] = "";
   snprintf(copyCommand, sizeof(copyCommand), "ls ./Sprites/ | grep -E '*_%s.png' | xargs -i cp ./Sprites/{} ./Sprites/Generación/%s/", regex, folderName);
-  printf("%s\n", copyCommand);
+  // printf("%s\n", copyCommand);
   system(copyCommand);
+}
+
+char *countFiles(char *folder)
+{
+  char countCommand[128] = "";
+  snprintf(countCommand, sizeof(countCommand), "ls Sprites/%s | wc -l >> output.txt", folder);
+  system(countCommand);
+
+  FILE *fptr = fopen("output.txt", "r");
+
+  char *count = (char *)malloc(sizeof(char) * 100);
+  if (count == NULL)
+  {
+    printf("Memoria no disponible.");
+    exit(1);
+  }
+
+  if (fptr)
+  {
+    fgets(count, 100, fptr);
+  }
+
+  fclose(fptr);
+  remove("output.txt");
+
+  return count;
 }
 
 int main()
 {
-
-  const char ALPHABET[] = "abcdefghijklmnopqrstuvwxyz";
-
-  int ind;
-
-  char currLetter[2];
-  currLetter[1] = '\0';
-
-  if (!doesFolderExist("./Sprites/Alfabético/", sizeof("./Sprites/Alfabético/")))
-  {
-    system("mkdir ./Sprites/Alfabético/"); // mkdir: crea una carpeta en el directorio actual
-  }
-
-  for (ind = 0; ind < 26; ind++)
-  {
-    currLetter[0] = toupper(ALPHABET[ind]);
-    // printf("%c\n", currLetter);
-    char currFolderAZ[64] = "./Sprites/Alfabético/";
-    strcat(currFolderAZ, currLetter);
-
-    if (!doesFolderExist(currFolderAZ, sizeof(currFolderAZ)))
-    {
-      createFolder(currFolderAZ, sizeof(currFolderAZ));
-    }
-
-    copyFilesAZ(currLetter);
-  }
-
+  FILE *fptr = fopen("RegistroPokemon.txt", "w");
+  
+  // Generacion
   if (!doesFolderExist("./Sprites/Generación/", sizeof("./Sprites/Generación/")))
   {
     system("mkdir ./Sprites/Generación/");
   }
+
+  fprintf(fptr, "Generación\n");
 
   char *gens[] = {"I", "II", "III", "IV"};
   char *regex[] = {"([1-9]|[1-9][0-9]|1[0-4][0-9]|15[0-1])",
@@ -136,11 +139,57 @@ int main()
     if (!doesFolderExist(currFolderGen, sizeof(currFolderGen)))
     {
       createFolder(currFolderGen, sizeof(currFolderGen));
+      
     }
 
     copyFilesGen(gens[i], regex[i]);
+
+    char folder[100] = "Generación/";
+    strcat(folder, gens[i]);
+
+    char *counter = countFiles(folder);
+    
+    fprintf(fptr, "%s - %s", gens[i], counter);
   }
 
+  // Alfabetico
+  const char ALPHABET[] = "abcdefghijklmnopqrstuvwxyz";
+
+  int ind;
+
+  char currLetter[2];
+  currLetter[1] = '\0';
+
+  if (!doesFolderExist("./Sprites/Alfabético/", sizeof("./Sprites/Alfabético/")))
+  {
+    system("mkdir ./Sprites/Alfabético/"); // mkdir: crea una carpeta en el directorio actual
+  }
+
+  fprintf(fptr, "Alfabético\n");
+
+  for (ind = 0; ind < 26; ind++)
+  {
+    currLetter[0] = toupper(ALPHABET[ind]);
+    // printf("%c\n", currLetter);
+    char currFolderAZ[64] = "./Sprites/Alfabético/";
+    strcat(currFolderAZ, currLetter);
+
+    if (!doesFolderExist(currFolderAZ, sizeof(currFolderAZ)))
+    {
+      createFolder(currFolderAZ, sizeof(currFolderAZ));
+    }
+
+    copyFilesAZ(currLetter);
+
+    char folder[100] = "Alfabético/";
+    strcat(folder, currLetter);
+
+    char *counter = countFiles(folder);
+    
+    fprintf(fptr, "%s - %s", currLetter, counter);
+  }
+
+  fclose(fptr);
   return 0;
 }
 
