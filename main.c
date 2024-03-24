@@ -114,7 +114,7 @@ char *countFiles(char *folder)
 int main()
 {
   FILE *fptr = fopen("RegistroPokemon.txt", "w");
-  
+
   // Generacion
   if (!doesFolderExist("./Sprites/Generación/", sizeof("./Sprites/Generación/")))
   {
@@ -134,12 +134,9 @@ int main()
     char currFolderGen[64] = "./Sprites/Generación/";
     strcat(currFolderGen, gens[i]);
 
-    printf("%s\n", currFolderGen);
-
     if (!doesFolderExist(currFolderGen, sizeof(currFolderGen)))
     {
       createFolder(currFolderGen, sizeof(currFolderGen));
-      
     }
 
     copyFilesGen(gens[i], regex[i]);
@@ -148,8 +145,9 @@ int main()
     strcat(folder, gens[i]);
 
     char *counter = countFiles(folder);
-    
+
     fprintf(fptr, "%s - %s", gens[i], counter);
+    free(counter);
   }
 
   // Alfabetico
@@ -185,8 +183,9 @@ int main()
     strcat(folder, currLetter);
 
     char *counter = countFiles(folder);
-    
+
     fprintf(fptr, "%s - %s", currLetter, counter);
+    free(counter);
   }
 
   fclose(fptr);
