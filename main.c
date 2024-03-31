@@ -77,6 +77,12 @@ void copyFilesAZ(char *name)
   system(copyCommand);
 }
 
+/**
+ * @brief Copia archivos de la carpeta @folderName encontrados con @regex
+ *
+ * @param folderName
+ * @param regex
+ */
 void copyFilesGen(char *folderName, char *regex)
 {
   char copyCommand[128] = "";

@@ -2,3 +2,5 @@ Sprites/*/
 !Sprites/*.png
 main
 RegistroPokemon.txt
+.vscode/
+run
