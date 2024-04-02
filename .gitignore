@@ -1,5 +1,5 @@
 Sprites/*/
-!Sprites/*.png
+Sprites/*.png
 main
 RegistroPokemon.txt
 .vscode/
