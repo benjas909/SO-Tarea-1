@@ -28,7 +28,7 @@ Instrucciones de Compilación:
 
     2. Abrir terminal y ubicarse en la carpeta que contenga el main.c que se señala como "CarpetaPrincipal/" en la sección estructura de las carpetas.
 
-    3. Ejecutar Makefile en la terminal escribiendo "make", debe estar situado en la carpeta SO-Tarea-1/.
+    3. Ejecutar Makefile en la terminal escribiendo "make", debe estar situado en la carpeta principal en todo momento.
 
     4. Ejecutar el main en la terminal con "./main".
 
