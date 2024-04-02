@@ -66,15 +66,15 @@ void createFolder(char *name, int nameLen)
 }
 
 /**
- * @brief Copia archivos por su primera letra a su carpeta correspondiente
+ * @brief Mueve archivos por su primera letra a su carpeta correspondiente
  *
  * @param name
  */
-void copyFilesAZ(char *name)
+void moveFilesAZ(char *name)
 {
-  char copyCommand[64] = "";
-  snprintf(copyCommand, sizeof(copyCommand), "cp ./Sprites/%c*.png ./Sprites/Alfabético/%s/", tolower(name[0]), name); // cp: copia un archivo a una ubicación dada
-  system(copyCommand);
+  char moveCommand[64] = "";
+  snprintf(moveCommand, sizeof(moveCommand), "mv ./Sprites/%c*.png ./Sprites/Alfabético/%s/", tolower(name[0]), name); // mv: mueve un archivo a una ubicación dada
+  system(moveCommand);
 }
 
 /**
@@ -183,7 +183,7 @@ int main()
       createFolder(currFolderAZ, sizeof(currFolderAZ));
     }
 
-    copyFilesAZ(currLetter);
+    moveFilesAZ(currLetter);
 
     char folder[100] = "Alfabético/";
     strcat(folder, currLetter);
