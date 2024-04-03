@@ -87,10 +87,15 @@ void copyFilesGen(char *folderName, char *regex)
 {
   char copyCommand[128] = "";
   snprintf(copyCommand, sizeof(copyCommand), "ls ./Sprites/ | grep -E '*_%s.png' | xargs -i cp ./Sprites/{} ./Sprites/Generación/%s/", regex, folderName);
-  // printf("%s\n", copyCommand);
   system(copyCommand);
 }
 
+/**
+ * @brief Cuenta los archivos que hay por cada carpeta dentro de alfabetico y generacion, entregando el nombre de la carpeta por parametro.
+ *
+ * @param folder
+ *
+ */
 char *countFiles(char *folder)
 {
   char countCommand[128] = "";
